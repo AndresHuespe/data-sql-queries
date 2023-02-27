@@ -1,13 +1,32 @@
 # pylint: disable=C0103, missing-docstring
+import sqlite3
+path = "movies.sqlite"
+conn = sqlite3.connect(path)
+db = conn.cursor()
 
 def detailed_movies(db):
     '''return the list of movies with their genres and director name'''
-    pass  # YOUR CODE HERE
+    db.execute("""SELECT m.title, m.genres, d.name
+FROM movies m 
+JOIN directors d ON
+m.director_id = d.id """)
+    rows = db.fetchall()
+    return rows
 
 
 def late_released_movies(db):
     '''return the list of all movies released after their director death'''
-    pass  # YOUR CODE HERE
+    db.execute("""SELECT m.title, m.start_year, d.death_year
+FROM movies m
+JOIN directors d 
+ON d.id = m.director_id 
+WHERE m.start_year  > d.death_year
+ORDER BY m.title""")
+    rows = db.fetchall()
+    movies = []
+    for i,j in enumerate(rows):
+        movies.append(rows[i][0])
+    return movies
 
 
 def stats_on(db, genre_name):
