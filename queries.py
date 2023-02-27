@@ -31,7 +31,16 @@ ORDER BY m.title""")
 
 def stats_on(db, genre_name):
     '''return a dict of stats for a given genre'''
-    pass  # YOUR CODE HERE
+    db.execute(f"""SELECT m.genres, COUNT(m.id), AVG(m.minutes)
+FROM movies m 
+WHERE genres = '{genre_name}'
+GROUP BY genres""")
+    stats = {}
+    rows = db.fetchall()
+    stats['genre'] = rows[0][0]
+    stats['number_of_movies'] = rows[0][1]
+    stats['avg_length'] = round(rows[0][2],2)
+    return stats
 
 
 def top_five_directors_for(db, genre_name):
