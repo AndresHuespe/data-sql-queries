@@ -1,20 +1,17 @@
 # pylint: disable=C0103, missing-docstring
-#import sqlite3
-#path = "movies.sqlite"
-#conn = sqlite3.connect(path)
+import sqlite3
+path = "movies.sqlite"
+conn = sqlite3.connect(path)
 
 
 def detailed_movies(db):
-    import sqlite3
-    conn = sqlite3.connect(db)
-    db1 = conn.cursor()
-    #db = conn.cursor()
     #return the list of movies with their genres and director name
-    db1.execute("""SELECT m.title, m.genres, d.name
+    db = conn.cursor()
+    db.execute("""SELECT m.title, m.genres, d.name
 FROM movies m
 JOIN directors d ON
 m.director_id = d.id """)
-    rows = db1.fetchall()
+    rows = db.fetchall()
     return rows
 
 
