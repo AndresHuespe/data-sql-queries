@@ -122,4 +122,15 @@ ORDER BY outcome ASC """)
 
 def top_five_youngest_newly_directors(db):
     '''return the top 5 youngest directors when they direct their first movie'''
-    pass  # YOUR CODE HERE
+    db.execute("""
+                SELECT d.name,
+m.start_year  - d.birth_year AS age 
+FROM directors d 
+JOIN movies m ON
+d.id  = m.director_id 
+WHERE d.birth_year NOTNULL 
+GROUP BY d.name
+ORDER BY age
+LIMIT 5""")
+    rows = db.fetchall()
+    return rows
