@@ -2,9 +2,10 @@
 import sqlite3
 path = "movies.sqlite"
 conn = sqlite3.connect(path)
-db = conn.cursor()
+
 
 def detailed_movies(db):
+    db = conn.cursor()
     '''return the list of movies with their genres and director name'''
     db.execute("""SELECT m.title, m.genres, d.name
 FROM movies m 
@@ -16,6 +17,7 @@ m.director_id = d.id """)
 
 def late_released_movies(db):
     '''return the list of all movies released after their director death'''
+    db = conn.cursor()
     db.execute("""SELECT m.title, m.start_year, d.death_year
 FROM movies m
 JOIN directors d 
@@ -30,6 +32,7 @@ ORDER BY m.title""")
 
 
 def stats_on(db, genre_name):
+    db = conn.cursor()
     '''return a dict of stats for a given genre'''
     db.execute(f"""SELECT m.genres, COUNT(m.id), AVG(m.minutes)
 FROM movies m 
@@ -45,6 +48,7 @@ GROUP BY genres""")
 
 def top_five_directors_for(db, genre_name):
     '''return the top 5 of the directors with the most movies for a given genre'''
+    db = conn.cursor()
     db.execute(f"""SELECT  d.name, COUNT(m.title) number
 FROM movies m
 JOIN directors d ON
@@ -59,6 +63,7 @@ LIMIT 5""")
 
 def movie_duration_buckets(db):
     '''return the movie counts grouped by bucket of 30 min duration'''
+    db = conn.cursor()
     db.execute("""SELECT 
 CASE 
     WHEN minutes < 30 
@@ -122,6 +127,7 @@ ORDER BY outcome ASC """)
 
 def top_five_youngest_newly_directors(db):
     '''return the top 5 youngest directors when they direct their first movie'''
+    db = conn.cursor()
     db.execute("""
                 SELECT d.name,
 m.start_year  - d.birth_year AS age 
