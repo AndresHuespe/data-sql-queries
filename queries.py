@@ -1,17 +1,20 @@
 # pylint: disable=C0103, missing-docstring
-import sqlite3
-path = "movies.sqlite"
-conn = sqlite3.connect(path)
+#import sqlite3
+#path = "movies.sqlite"
+#conn = sqlite3.connect(path)
 
 
 def detailed_movies(db):
-    db = conn.cursor()
+    import sqlite3
+    conn = sqlite3.connect(db)
+    db1 = conn.cursor()
+    #db = conn.cursor()
     #return the list of movies with their genres and director name
-    db.execute("""SELECT m.title, m.genres, d.name
+    db1.execute("""SELECT m.title, m.genres, d.name
 FROM movies m
 JOIN directors d ON
 m.director_id = d.id """)
-    rows = db.fetchall()
+    rows = db1.fetchall()
     return rows
 
 
@@ -26,7 +29,7 @@ WHERE m.start_year  > d.death_year
 ORDER BY m.title""")
     rows = db.fetchall()
     movies = []
-    for i in rows:
+    for i in range(len(rows)):
         movies.append(rows[i][0])
     return movies
 
