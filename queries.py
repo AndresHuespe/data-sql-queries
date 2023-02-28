@@ -6,9 +6,9 @@ conn = sqlite3.connect(path)
 
 def detailed_movies(db):
     db = conn.cursor()
-    '''return the list of movies with their genres and director name'''
+    #return the list of movies with their genres and director name
     db.execute("""SELECT m.title, m.genres, d.name
-FROM movies m 
+FROM movies m
 JOIN directors d ON
 m.director_id = d.id """)
     rows = db.fetchall()
@@ -16,12 +16,12 @@ m.director_id = d.id """)
 
 
 def late_released_movies(db):
-    '''return the list of all movies released after their director death'''
+    #return the list of all movies released after their director death'''
     db = conn.cursor()
     db.execute("""SELECT m.title, m.start_year, d.death_year
 FROM movies m
-JOIN directors d 
-ON d.id = m.director_id 
+JOIN directors d
+ON d.id = m.director_id
 WHERE m.start_year  > d.death_year
 ORDER BY m.title""")
     rows = db.fetchall()
@@ -33,10 +33,10 @@ ORDER BY m.title""")
 
 def stats_on(db, genre_name):
     db = conn.cursor()
-    '''return a dict of stats for a given genre'''
+    #return a dict of stats for a given genre'''
     db.execute(f"""SELECT m.genres, COUNT(m.id), AVG(m.minutes)
-FROM movies m 
-WHERE genres = '{genre_name}' 
+FROM movies m
+WHERE genres = '{genre_name}'
 GROUP BY genres""")
     stats = {}
     rows = db.fetchall()
@@ -47,14 +47,14 @@ GROUP BY genres""")
 
 
 def top_five_directors_for(db, genre_name):
-    '''return the top 5 of the directors with the most movies for a given genre'''
+    #return the top 5 of the directors with the most movies for a given genre'''
     db = conn.cursor()
     db.execute(f"""SELECT  d.name, COUNT(m.title) number
 FROM movies m
 JOIN directors d ON
-d.id = m.director_id 
+d.id = m.director_id
 WHERE genres = '{genre_name}'
-GROUP BY director_id 
+GROUP BY director_id
 ORDER BY number DESC, name ASC
 LIMIT 5""")
     rows = db.fetchall()
@@ -62,11 +62,11 @@ LIMIT 5""")
 
 
 def movie_duration_buckets(db):
-    '''return the movie counts grouped by bucket of 30 min duration'''
+    #return the movie counts grouped by bucket of 30 min duration'''
     db = conn.cursor()
-    db.execute("""SELECT 
-CASE 
-    WHEN minutes < 30 
+    db.execute("""SELECT
+CASE
+    WHEN minutes < 30
         THEN 30
     WHEN minutes >= 30 AND minutes < 60
         THEN 60
@@ -79,9 +79,9 @@ CASE
     WHEN minutes >= 150 AND minutes <180
         THEN 180
     WHEN minutes >= 180 AND minutes <210
-        THEN 210  
+        THEN 210
     WHEN minutes >= 210 AND minutes < 240
-        THEN 240     
+        THEN 240
     WHEN minutes >= 240 AND minutes < 270
         THEN 270
     WHEN minutes >= 270 AND minutes < 300
@@ -118,7 +118,7 @@ CASE
         THEN 1020
     END AS outcome,
     COUNT(title) AS count
-FROM movies 
+FROM movies
 GROUP BY outcome
 ORDER BY outcome ASC """)
     rows = db.fetchall()
@@ -126,15 +126,15 @@ ORDER BY outcome ASC """)
 
 
 def top_five_youngest_newly_directors(db):
-    '''return the top 5 youngest directors when they direct their first movie'''
+    #return the top 5 youngest directors when they direct their first movie'''
     db = conn.cursor()
     db.execute("""
                 SELECT d.name,
-m.start_year  - d.birth_year AS age 
-FROM directors d 
+m.start_year  - d.birth_year AS age
+FROM directors d
 JOIN movies m ON
-d.id  = m.director_id 
-WHERE d.birth_year NOTNULL 
+d.id  = m.director_id
+WHERE d.birth_year NOTNULL
 GROUP BY d.name
 ORDER BY age
 LIMIT 5""")
