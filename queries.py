@@ -59,7 +59,65 @@ LIMIT 5""")
 
 def movie_duration_buckets(db):
     '''return the movie counts grouped by bucket of 30 min duration'''
-    pass  # YOUR CODE HERE
+    db.execute("""SELECT 
+CASE 
+    WHEN minutes < 30 
+        THEN 30
+    WHEN minutes >= 30 AND minutes < 60
+        THEN 60
+    WHEN minutes >= 60 AND minutes <90
+        THEN 90
+    WHEN minutes >=90 AND minutes <120
+        THEN 120
+    WHEN minutes >= 120 AND minutes <150
+        THEN 150
+    WHEN minutes >= 150 AND minutes <180
+        THEN 180
+    WHEN minutes >= 180 AND minutes <210
+        THEN 210  
+    WHEN minutes >= 210 AND minutes < 240
+        THEN 240     
+    WHEN minutes >= 240 AND minutes < 270
+        THEN 270
+    WHEN minutes >= 270 AND minutes < 300
+        THEN 300
+    WHEN minutes >= 300 AND minutes < 330
+        THEN 330
+    WHEN minutes >= 330 AND minutes < 360
+        THEN 360
+    WHEN minutes >= 360 AND minutes < 390
+        THEN 390
+    WHEN minutes >= 390 AND minutes < 420
+        THEN 420
+    WHEN minutes >= 420 AND minutes < 450
+        THEN 450
+    WHEN minutes >= 450 AND minutes < 480
+        THEN 480
+    WHEN minutes >= 480 AND minutes < 510
+        THEN 510
+    WHEN minutes >= 510 AND minutes < 540
+        THEN 540
+    WHEN minutes >= 540 AND minutes < 570
+        THEN 570
+    WHEN minutes >= 570 AND minutes < 600
+        THEN 600
+    WHEN minutes >= 600 AND minutes < 630
+        THEN 630
+    WHEN minutes >= 630 AND minutes < 660
+        THEN 660
+    WHEN minutes >= 660 AND minutes < 690
+        THEN 690
+    WHEN minutes >= 870 AND minutes < 900
+        THEN 900
+    WHEN minutes >= 990 AND minutes < 1020
+        THEN 1020
+    END AS outcome,
+    COUNT(title) AS count
+FROM movies 
+GROUP BY outcome
+ORDER BY outcome ASC """)
+    rows = db.fetchall()
+    return rows[1::]
 
 
 def top_five_youngest_newly_directors(db):
