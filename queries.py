@@ -26,7 +26,7 @@ WHERE m.start_year  > d.death_year
 ORDER BY m.title""")
     rows = db.fetchall()
     movies = []
-    for i,j in enumerate(rows):
+    for i in rows:
         movies.append(rows[i][0])
     return movies
 
