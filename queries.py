@@ -25,11 +25,11 @@ ON d.id = m.director_id
 WHERE m.start_year  > d.death_year
 ORDER BY m.title""")
     rows = db.fetchall()
-    movies = []
-    for i in range(len(rows)):
-        movies.append(rows[i][0])
-    return movies
-
+    #movies = []
+    #for i in range(len(rows)):
+    #    movies.append(rows[i][0])
+    #return movies
+    return [director[0] for director in rows]
 
 def stats_on(db, genre_name):
     db = conn.cursor()
