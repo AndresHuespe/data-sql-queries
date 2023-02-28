@@ -36,7 +36,7 @@ def stats_on(db, genre_name):
     '''return a dict of stats for a given genre'''
     db.execute(f"""SELECT m.genres, COUNT(m.id), AVG(m.minutes)
 FROM movies m 
-WHERE genres = '{genre_name}'
+WHERE genres = '{genre_name}' 
 GROUP BY genres""")
     stats = {}
     rows = db.fetchall()
