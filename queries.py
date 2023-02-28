@@ -45,7 +45,16 @@ GROUP BY genres""")
 
 def top_five_directors_for(db, genre_name):
     '''return the top 5 of the directors with the most movies for a given genre'''
-    pass  # YOUR CODE HERE
+    db.execute(f"""SELECT COUNT(m.title) number, d.name
+FROM movies m
+JOIN directors d ON
+d.id = m.director_id 
+WHERE genres = '{genre_name}'
+GROUP BY director_id 
+ORDER BY number DESC 
+LIMIT 5""")
+    rows = db.fetchall()
+    return rows
 
 
 def movie_duration_buckets(db):
